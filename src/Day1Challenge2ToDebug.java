@@ -7,7 +7,6 @@ import java.util.Scanner;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Day1Challenge2ToDebug {
     public static void main(String[] args) {
-
         try (Scanner scanner = new Scanner(new File("puzzleInputs/PuzzleInputDay1.txt"))) {
             int totalSumPartTwo = 0;
             Map<String, Integer> numberMap = Map.of(
@@ -21,13 +20,20 @@ public class Day1Challenge2ToDebug {
                     "eight", 8,
                     "nine", 9
             );
+            int lineIndex;
+            String line;
+            int firstIndex;
+            int lastIndex;
+            String firstSubstring;
+            String lastSubstring;
 
             while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
-                int firstIndex = -1;
-                int lastIndex = 0;
-                String firstSubstring = "";
-                String lastSubstring = "";
+                lineIndex = 0;
+                line = scanner.nextLine();
+                firstIndex = -1;
+                lastIndex = 0;
+                firstSubstring = "";
+                lastSubstring = "";
 
                 for (String substring : numberMap.keySet()) {
                     int inLinePosition = line.indexOf(substring);
@@ -38,14 +44,14 @@ public class Day1Challenge2ToDebug {
                     }
                 }
 
-                String lineWithReplacedInitialSubstring = line;
-
                 if (!firstSubstring.isBlank()) {
-                    lineWithReplacedInitialSubstring = line.replace(firstSubstring, (String.valueOf(numberMap.get(firstSubstring)) + firstSubstring.charAt(firstSubstring.length() - 1)));
+                    //change -- for the 1st substring we do have to add the last letter to the number we substitute the substring by e.g. see line 323 (where 1st and last substrings overlap)
+                    line = line.replaceFirst(firstSubstring, (String.valueOf(numberMap.get(firstSubstring)) + firstSubstring.charAt(firstSubstring.length() - 1)));
                 }
 
                 for (String substring : numberMap.keySet()) {
-                    int inLinePosition = lineWithReplacedInitialSubstring.indexOf(substring);
+                    //change: needed to find the index starting from back in case there are two of the same numbers
+                    int inLinePosition = line.lastIndexOf(substring);
 
                     if (inLinePosition != -1 && (lastIndex == 0 || inLinePosition > lastIndex)) {
                         lastIndex = inLinePosition;
@@ -53,18 +59,23 @@ public class Day1Challenge2ToDebug {
                     }
                 }
 
-                String lineWithReplacedSubstrings = lineWithReplacedInitialSubstring;
-
+                //change: need to not replace line but store in new line so that in line 70 we are taking the substring from the original line
                 if (!lastSubstring.isBlank()) {
-                    lineWithReplacedSubstrings = lineWithReplacedInitialSubstring.replace(lastSubstring, (String.valueOf(numberMap.get(lastSubstring)) + lastSubstring.charAt(lastSubstring.length() - 1)));
+                    String newLine = line.substring(0, lastIndex) + numberMap.get(lastSubstring);
+                    if (lastIndex + lastSubstring.length() < line.length()) {
+                        newLine += line.substring(lastIndex + lastSubstring.length());
+                    }
+                    line = newLine;
                 }
 
-                String numbersOnly = lineWithReplacedSubstrings.replaceAll("[^1-9]", "");
+                String numbersOnly = line.replaceAll("[^1-9]", "");
                 String stringNumber = "" + numbersOnly.charAt(0) + numbersOnly.charAt(numbersOnly.length() - 1);
                 totalSumPartTwo += Integer.parseInt(stringNumber);
+
+                lineIndex ++;
             }
 
-            System.out.printf("The total sum of calibration values in Part 2 is %d", totalSumPartTwo);
+            System.out.println("The total sum of calibration values in Part 2 is " + totalSumPartTwo);
 
         } catch (FileNotFoundException e) {
             System.err.println("File not found: " + e.getMessage());

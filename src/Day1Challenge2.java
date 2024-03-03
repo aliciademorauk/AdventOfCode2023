@@ -6,7 +6,8 @@ import java.util.Scanner;
 public class Day1Challenge2 {
     public static void main(String[] args) {
 
-        //Part 1
+        //Part 2
+
         Map<String, String> numberMap = Map.of(
                 "one", "o1e",
                 "two", "t2o",
@@ -20,10 +21,11 @@ public class Day1Challenge2 {
         );
 
         try (Scanner scanner = new Scanner(new File("puzzleInputs/PuzzleInputDay1.txt"))) {
-            int totalSumPartOne = 0;
+            int totalSumPartTwo = 0;
+            String line;
 
             while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
+                line = scanner.nextLine();
                 for (String key : numberMap.keySet()) {
                     line = line.replaceAll(key, numberMap.get(key));
                 }
@@ -31,10 +33,10 @@ public class Day1Challenge2 {
                 //Remove all chars except digits from 1-9 inclusive
                 String numbersOnly = line.replaceAll("[^1-9]", "");
                 String stringNumber = "" + numbersOnly.charAt(0) + numbersOnly.charAt(numbersOnly.length() - 1);
-                totalSumPartOne += Integer.parseInt(stringNumber);
+                totalSumPartTwo += Integer.parseInt(stringNumber);
             }
 
-            System.out.printf("The total sum of calibration values in Part 1 is %d", totalSumPartOne);
+            System.out.printf("The total sum of calibration values in Part 1 is %d", totalSumPartTwo);
 
         } catch (FileNotFoundException e) {
             System.err.println("File not found: " + e.getMessage());

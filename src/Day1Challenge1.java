@@ -11,12 +11,15 @@ public class Day1Challenge1 {
 
         try (Scanner scanner = new Scanner(new File("puzzleInputs/PuzzleInputDay1.txt"))) {
             int totalSumPartOne = 0;
+            String line;
+            String numbersOnly;
+            String stringNumber;
 
             while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
+                line = scanner.nextLine();
                 //Remove all chars except digits from 1-9 inclusive
-                String numbersOnly = line.replaceAll("[^1-9]", "");
-                String stringNumber = "" + numbersOnly.charAt(0) + numbersOnly.charAt(numbersOnly.length() - 1);
+                numbersOnly = line.replaceAll("[^1-9]", "");
+                stringNumber = "" + numbersOnly.charAt(0) + numbersOnly.charAt(numbersOnly.length() - 1);
                 totalSumPartOne += Integer.parseInt(stringNumber);
             }
 

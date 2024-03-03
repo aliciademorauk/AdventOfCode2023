@@ -11,16 +11,18 @@ public class Day2Challenge1 {
             String line;
             String[] parts;
             String part;
+            boolean isGameIDPossible;
+            int[] numbersArray;
 
             while (scanner.hasNextLine()) {
                 line = scanner.nextLine();
                 parts = line.split(":");
                 part = parts[1].trim();
-                int[] numbersArray = Arrays.stream(part.split("\\D+"))
+                numbersArray = Arrays.stream(part.split("\\D+"))
                         .filter(s -> !s.isEmpty())
                         .mapToInt(Integer::parseInt)
                         .toArray();
-                boolean isGameIDPossible = true;
+                isGameIDPossible = true;
 
                 for (int number : numbersArray) {
                     int indexAfterNumber = line.indexOf(String.valueOf(number)) + 2;
