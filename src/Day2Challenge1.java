@@ -6,39 +6,40 @@ import java.io.File;
 public class Day2Challenge1 {
     public static void main(String[] args) throws FileNotFoundException {
         try (Scanner scanner = new Scanner(new File("puzzleInputs/PuzzleInputDay2.txt"))) {
-            int lineIDCount = 1;
-            int sumIDsPossible = 0;
             String line;
-            String[] parts;
-            String part;
+            int[] numbersArray; // array of numbers in each Game
+            int startFromPosition;
+            int lineIDNumber = 1;
             boolean isGameIDPossible;
-            int[] numbersArray;
+            int sumIDsPossible = 0;
 
             while (scanner.hasNextLine()) {
                 line = scanner.nextLine();
-                parts = line.split(":");
-                part = parts[1].trim();
-                numbersArray = Arrays.stream(part.split("\\D+"))
+                line = (line.split(":"))[1].trim();
+                numbersArray = Arrays.stream(line.split("\\D+"))
                         .filter(s -> !s.isEmpty())
                         .mapToInt(Integer::parseInt)
                         .toArray();
                 isGameIDPossible = true;
-
+                startFromPosition = 0;
                 for (int number : numbersArray) {
-                    int indexAfterNumber = line.indexOf(String.valueOf(number)) + 2;
-                    if (number > 12 && (line.startsWith(" r", indexAfterNumber) || number > 14 || (number > 13 && line.startsWith(" g", indexAfterNumber)))) {
+                    startFromPosition = calculateIndexAfter2ndDigit(line, number, startFromPosition);
+                    if (number > 12 && (line.startsWith(" r", startFromPosition) || number > 14 || (number > 13 && line.startsWith(" g", startFromPosition)))) {
                         isGameIDPossible = false;
                         break;
                     }
                 }
 
                 if (isGameIDPossible) {
-                    sumIDsPossible += lineIDCount;
+                    sumIDsPossible += lineIDNumber;
                 }
-                lineIDCount ++;
+                lineIDNumber ++;
             }
-
             System.out.println("The total sum of game IDs that are possible is " + sumIDsPossible + ".");
         }
+    }
+
+    public static int calculateIndexAfter2ndDigit (String line, int number, int startFromPosition) {
+        return line.indexOf(String.valueOf(number), startFromPosition) + 2;
     }
 }
