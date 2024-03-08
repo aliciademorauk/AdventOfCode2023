@@ -43,9 +43,6 @@ public class Day2Challenge2 {
 
     public static int calculateIndexAfterNumber (String line, int number, int startFromPosition) {
         int indexAfterNumber = line.indexOf(String.valueOf(number), startFromPosition) + 1;
-        if (number > 9) {
-            indexAfterNumber += 1;
-        }
-        return indexAfterNumber;
+        return number > 9 ? indexAfterNumber + 1 : indexAfterNumber;
     }
 }
