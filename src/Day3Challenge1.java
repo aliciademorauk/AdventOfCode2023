@@ -9,11 +9,12 @@ public class Day3Challenge1 {
             String line;
             String previousLine = "";
             String nextLine = "";
+            String[] numbersArray;
             int indexOfNumber;
             int indexBeforeNumber;
             int indexAfterNumber;
-            String[] numbersArray;
             int sumParts = 0;
+            int index = 0;
 
             while (scanner.hasNextLine()) {
                 if (!nextLine.isBlank()) {
@@ -31,13 +32,18 @@ public class Day3Challenge1 {
                 for (String number : numbersArray) {
                     indexOfNumber = line.indexOf(number);
                     indexBeforeNumber = indexOfNumber == 0 ? indexOfNumber : indexOfNumber - 1;
+                    indexAfterNumber = indexOfNumber;
                     if (indexOfNumber < line.length() - 1) {
                         indexAfterNumber = indexOfNumber + 1;
-                        if (number.length() == 2) {indexAfterNumber += 1;}
-                        if (number.length() == 3) {indexAfterNumber += 2;}
-                    } else {indexAfterNumber = indexOfNumber;}
+                        if (number.length() >= 2 && indexOfNumber < line.length() - 2) {
+                            indexAfterNumber += 1;
+                        }
+                        if (number.length() >= 3 && indexOfNumber < line.length() - 3) {
+                            indexAfterNumber += 2;
+                        }
+                    }
 
-                    //check this line
+                    //check current line
                     if (line.charAt(indexBeforeNumber) != '.' || line.charAt(indexAfterNumber) != '.') {
                         sumParts += Integer.parseInt(number);
                     }
@@ -47,6 +53,7 @@ public class Day3Challenge1 {
                     }
                 }
                 previousLine = line;
+                index ++;
             }
             System.out.println("The sum of parts is " + sumParts + ".");
         }
