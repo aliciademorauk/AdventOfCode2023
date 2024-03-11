@@ -1,9 +1,9 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.sql.SQLOutput;
 import java.util.Arrays;
 import java.util.Scanner;
 public class Day3Challenge1 {
+
     public static void main(String[] args) throws FileNotFoundException {
         try (Scanner scanner = new Scanner(new File("puzzleInputs/PuzzleInputDay3.txt"))) {
             String line;
@@ -14,7 +14,6 @@ public class Day3Challenge1 {
             int indexBeforeNumber;
             int indexAfterNumber;
             int sumParts = 0;
-            int index = 0;
 
             while (scanner.hasNextLine()) {
                 if (!nextLine.isBlank()) {
@@ -39,21 +38,21 @@ public class Day3Challenge1 {
                             indexAfterNumber += 1;
                         }
                         if (number.length() >= 3 && indexOfNumber < line.length() - 3) {
-                            indexAfterNumber += 2;
+                            indexAfterNumber += 1;
                         }
                     }
 
-                    //check current line
                     if (line.charAt(indexBeforeNumber) != '.' || line.charAt(indexAfterNumber) != '.') {
                         sumParts += Integer.parseInt(number);
-                    }
-                    //check previous and next line
-                    if (nextLine.substring(indexBeforeNumber, indexAfterNumber + 1).chars().anyMatch(ch -> ch != '.') || (!previousLine.isBlank() && previousLine.substring(indexBeforeNumber, indexAfterNumber + 1).chars().anyMatch(ch -> ch != '.'))) {
+                    } else if (nextLine.substring(indexBeforeNumber, indexAfterNumber + 1).chars().anyMatch(ch -> ch != '.')) {
                         sumParts += Integer.parseInt(number);
+                    } else if (!previousLine.isBlank()) {
+                        if (previousLine.substring(indexBeforeNumber, indexAfterNumber + 1).chars().anyMatch(ch -> ch != '.')) {
+                            sumParts += Integer.parseInt(number);
+                        }
                     }
                 }
                 previousLine = line;
-                index ++;
             }
             System.out.println("The sum of parts is " + sumParts + ".");
         }
