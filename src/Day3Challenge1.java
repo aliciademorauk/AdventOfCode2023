@@ -1,6 +1,5 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Arrays;
 import java.util.Scanner;
 public class Day3Challenge1 {
 
@@ -10,6 +9,7 @@ public class Day3Challenge1 {
             String previousLine = "";
             String nextLine = "";
             String[] numbersArray;
+            String[] linesArray = new String[3];
             int indexOfNumber;
             int indexBeforeNumber;
             int indexAfterNumber;
@@ -24,31 +24,23 @@ public class Day3Challenge1 {
                     nextLine = scanner.nextLine();
                 }
 
-                numbersArray = Arrays.stream(line.split("\\D+"))
-                        .filter(s -> !s.isEmpty())
-                        .toArray(String[]::new);
+                linesArray[0] = previousLine;
+                linesArray[1] = line;
+                linesArray[2] = nextLine;
+                numbersArray = line.split("\\D+");
 
                 for (String number : numbersArray) {
                     indexOfNumber = line.indexOf(number);
+                    indexAfterNumber = (indexOfNumber + number.length() - 1 < line.length() - 1) ? indexOfNumber + number.length() : indexOfNumber + number.length() - 1;
                     indexBeforeNumber = indexOfNumber == 0 ? indexOfNumber : indexOfNumber - 1;
-                    indexAfterNumber = indexOfNumber;
-                    if (indexOfNumber < line.length() - 1) {
-                        indexAfterNumber = indexOfNumber + 1;
-                        if (number.length() >= 2 && indexOfNumber < line.length() - 2) {
-                            indexAfterNumber += 1;
-                        }
-                        if (number.length() >= 3 && indexOfNumber < line.length() - 3) {
-                            indexAfterNumber += 1;
-                        }
-                    }
 
-                    if (line.charAt(indexBeforeNumber) != '.' || line.charAt(indexAfterNumber) != '.') {
-                        sumParts += Integer.parseInt(number);
-                    } else if (nextLine.substring(indexBeforeNumber, indexAfterNumber + 1).chars().anyMatch(ch -> ch != '.')) {
-                        sumParts += Integer.parseInt(number);
-                    } else if (!previousLine.isBlank()) {
-                        if (previousLine.substring(indexBeforeNumber, indexAfterNumber + 1).chars().anyMatch(ch -> ch != '.')) {
-                            sumParts += Integer.parseInt(number);
+                    for (String thisLine : linesArray) {
+                        if (!thisLine.isBlank()) {
+                            for (int i = indexBeforeNumber; i <= indexAfterNumber; i++) {
+                                if ((thisLine.charAt(i) != '.' && !Character.isDigit(thisLine.charAt(i)))) {
+                                    sumParts += Integer.parseInt(number);
+                                }
+                            }
                         }
                     }
                 }
