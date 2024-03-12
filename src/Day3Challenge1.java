@@ -38,11 +38,9 @@ public class Day3Challenge1 {
                     indexOfNumber = currentLine.indexOf(number, startFromPosition);
                     indexBeforeNumber = setBeforeIndex(indexOfNumber);
                     indexAfterNumber = setAfterIndex(currentLine, number, indexOfNumber);
-
-
                     for (String line : linesArray) {
                         if (!line.isBlank()) {
-                            if (hasSymbolInNumberRange(line, indexBeforeNumber, indexAfterNumber)) {
+                            if (hasSymbolInRange(line, indexBeforeNumber, indexAfterNumber)) {
                                 sumParts += Integer.parseInt(number);
                                 break;
                             }
@@ -51,24 +49,21 @@ public class Day3Challenge1 {
                     startFromPosition = indexAfterNumber;
                 }
                 previousLine = currentLine;
+            }
 
-                //Process last line of file input
-                if (!scanner.hasNext()) {
-                    currentLine = nextLine;
-                    numbersArray = Arrays.stream(currentLine.split("\\D+"))
-                            .filter(s -> !s.isBlank())
-                            .toArray(String[]::new);
+            //Processing of last line of file input
+            numbersArray = Arrays.stream(nextLine.split("\\D+"))
+                    .filter(s -> !s.isBlank())
+                    .toArray(String[]::new);
 
-                    startFromPosition = 0;
-                    for (String number : numbersArray) {
-                        indexOfNumber = currentLine.indexOf(number, startFromPosition);
-                        indexBeforeNumber = setBeforeIndex(indexOfNumber);
-                        indexAfterNumber = setAfterIndex(currentLine, number, indexOfNumber);
+            startFromPosition = 0;
+            for (String number : numbersArray) {
+                indexOfNumber = nextLine.indexOf(number, startFromPosition);
+                indexBeforeNumber = setBeforeIndex(indexOfNumber);
+                indexAfterNumber = setAfterIndex(nextLine, number, indexOfNumber);
 
-                        if (hasSymbolInNumberRange(previousLine, indexBeforeNumber, indexAfterNumber) || hasSymbolInNumberRange(currentLine, indexBeforeNumber, indexAfterNumber)) {
-                            sumParts += Integer.parseInt(number);
-                        }
-                    }
+                if (hasSymbolInRange(previousLine, indexBeforeNumber, indexAfterNumber) || hasSymbolInRange(nextLine, indexBeforeNumber, indexAfterNumber)) {
+                    sumParts += Integer.parseInt(number);
                 }
             }
             System.out.println("The sum of parts is " + sumParts + ".");
@@ -81,7 +76,7 @@ public class Day3Challenge1 {
     private static int setAfterIndex(String line, String number, int indexOfNumber) {
         return (indexOfNumber + number.length() < line.length()) ? indexOfNumber + number.length() : indexOfNumber + number.length() - 1;
     }
-    private static boolean hasSymbolInNumberRange (String line, int indexBeforeNumber, int indexAfterNumber) {
+    private static boolean hasSymbolInRange (String line, int indexBeforeNumber, int indexAfterNumber) {
         for (int i = indexBeforeNumber; i <= indexAfterNumber; i++) {
             if ((line.charAt(i) != '.' && !Character.isDigit(line.charAt(i)))) {
                 return true;
