@@ -1,50 +1,58 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
 import java.util.Scanner;
 public class Day3Challenge1 {
 
     public static void main(String[] args) throws FileNotFoundException {
         try (Scanner scanner = new Scanner(new File("puzzleInputs/PuzzleInputDay3.txt"))) {
-            String line;
+            String currentLine;
             String previousLine = "";
             String nextLine = "";
             String[] numbersArray;
             String[] linesArray = new String[3];
             int indexOfNumber;
+            int startFromPosition;
             int indexBeforeNumber;
             int indexAfterNumber;
             int sumParts = 0;
 
             while (scanner.hasNextLine()) {
                 if (!nextLine.isBlank()) {
-                    line = nextLine;
-                } else {line = scanner.nextLine();}
+                    currentLine = nextLine;
+                } else {currentLine = scanner.nextLine();}
 
                 if (scanner.hasNextLine()) {
                     nextLine = scanner.nextLine();
                 }
 
                 linesArray[0] = previousLine;
-                linesArray[1] = line;
+                linesArray[1] = currentLine;
                 linesArray[2] = nextLine;
-                numbersArray = line.split("\\D+");
+                numbersArray = Arrays.stream(currentLine.split("\\D+"))
+                        .filter(s -> !s.isBlank())
+                        .toArray(String[]::new);
 
+                startFromPosition = 0;
                 for (String number : numbersArray) {
-                    indexOfNumber = line.indexOf(number);
-                    indexAfterNumber = (indexOfNumber + number.length() - 1 < line.length() - 1) ? indexOfNumber + number.length() : indexOfNumber + number.length() - 1;
+                    indexOfNumber = currentLine.indexOf(number, startFromPosition);
+                    indexAfterNumber = (indexOfNumber + number.length() < currentLine.length()) ? indexOfNumber + number.length() : indexOfNumber + number.length() - 1;
                     indexBeforeNumber = indexOfNumber == 0 ? indexOfNumber : indexOfNumber - 1;
 
-                    for (String thisLine : linesArray) {
-                        if (!thisLine.isBlank()) {
+                    checkNumber:
+                    for (String line : linesArray) {
+                        if (!line.isBlank()) {
                             for (int i = indexBeforeNumber; i <= indexAfterNumber; i++) {
-                                if ((thisLine.charAt(i) != '.' && !Character.isDigit(thisLine.charAt(i)))) {
+                                if ((line.charAt(i) != '.' && !Character.isDigit(line.charAt(i)))) {
                                     sumParts += Integer.parseInt(number);
+                                    break checkNumber;
                                 }
                             }
                         }
                     }
+                    startFromPosition = indexAfterNumber;
                 }
-                previousLine = line;
+                previousLine = currentLine;
             }
             System.out.println("The sum of parts is " + sumParts + ".");
         }
