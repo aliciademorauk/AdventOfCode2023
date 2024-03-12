@@ -5,7 +5,7 @@ import java.util.*;
 //
 public class Day2Challenge2 {
     public static void main(String[] args) throws FileNotFoundException {
-        try (Scanner scanner = new Scanner(new File("puzzleInputs/PuzzleInputDay2.txt"))) {
+        try (Scanner scanner = new Scanner(new File("../puzzleInputs/PuzzleInputDay2.txt"))) {
             String line;
             int[] numbersArray; // array of numbers in each Game
             String[] coloursArray = {" r", " b", " g"};

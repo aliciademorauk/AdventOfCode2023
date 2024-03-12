@@ -5,21 +5,21 @@ import java.util.Scanner;
 public class Day3Challenge1 {
 
     public static void main(String[] args) throws FileNotFoundException {
-        try (Scanner scanner = new Scanner(new File("puzzleInputs/PuzzleInputDay3.txt"))) {
+        try (Scanner scanner = new Scanner(new File("../puzzleInputs/PuzzleInputDay3.txt"))) {
             String currentLine;
             String previousLine = "";
             String nextLine = "";
             String[] numbersArray;
-            String[] linesArray = new String[3];
+            String[] linesArray = new String[3]; // store previous line [0], current line [1], next line [2]
             int indexOfNumber;
-            int startFromPosition;
             int indexBeforeNumber;
             int indexAfterNumber;
+            int startFromPosition;
             int sumParts = 0;
 
             while (scanner.hasNextLine()) {
                 if (!nextLine.isBlank()) {
-                    currentLine = nextLine;
+                     currentLine = nextLine;
                 } else {currentLine = scanner.nextLine();}
 
                 if (scanner.hasNextLine()) {
@@ -36,25 +36,57 @@ public class Day3Challenge1 {
                 startFromPosition = 0;
                 for (String number : numbersArray) {
                     indexOfNumber = currentLine.indexOf(number, startFromPosition);
-                    indexAfterNumber = (indexOfNumber + number.length() < currentLine.length()) ? indexOfNumber + number.length() : indexOfNumber + number.length() - 1;
-                    indexBeforeNumber = indexOfNumber == 0 ? indexOfNumber : indexOfNumber - 1;
+                    indexBeforeNumber = setBeforeIndex(indexOfNumber);
+                    indexAfterNumber = setAfterIndex(currentLine, number, indexOfNumber);
 
-                    checkNumber:
+
                     for (String line : linesArray) {
                         if (!line.isBlank()) {
-                            for (int i = indexBeforeNumber; i <= indexAfterNumber; i++) {
-                                if ((line.charAt(i) != '.' && !Character.isDigit(line.charAt(i)))) {
-                                    sumParts += Integer.parseInt(number);
-                                    break checkNumber;
-                                }
+                            if (hasSymbolInNumberRange(line, indexBeforeNumber, indexAfterNumber)) {
+                                sumParts += Integer.parseInt(number);
+                                break;
                             }
                         }
                     }
                     startFromPosition = indexAfterNumber;
                 }
                 previousLine = currentLine;
+
+                //Process last line of file input
+                if (!scanner.hasNext()) {
+                    currentLine = nextLine;
+                    numbersArray = Arrays.stream(currentLine.split("\\D+"))
+                            .filter(s -> !s.isBlank())
+                            .toArray(String[]::new);
+
+                    startFromPosition = 0;
+                    for (String number : numbersArray) {
+                        indexOfNumber = currentLine.indexOf(number, startFromPosition);
+                        indexBeforeNumber = setBeforeIndex(indexOfNumber);
+                        indexAfterNumber = setAfterIndex(currentLine, number, indexOfNumber);
+
+                        if (hasSymbolInNumberRange(previousLine, indexBeforeNumber, indexAfterNumber) || hasSymbolInNumberRange(currentLine, indexBeforeNumber, indexAfterNumber)) {
+                            sumParts += Integer.parseInt(number);
+                        }
+                    }
+                }
             }
             System.out.println("The sum of parts is " + sumParts + ".");
         }
+    }
+
+    public static int setBeforeIndex(int indexOfNumber) {
+        return indexOfNumber == 0 ? indexOfNumber : indexOfNumber - 1;
+    }
+    private static int setAfterIndex(String line, String number, int indexOfNumber) {
+        return (indexOfNumber + number.length() < line.length()) ? indexOfNumber + number.length() : indexOfNumber + number.length() - 1;
+    }
+    private static boolean hasSymbolInNumberRange (String line, int indexBeforeNumber, int indexAfterNumber) {
+        for (int i = indexBeforeNumber; i <= indexAfterNumber; i++) {
+            if ((line.charAt(i) != '.' && !Character.isDigit(line.charAt(i)))) {
+                return true;
+            }
+        }
+        return false;
     }
 }
