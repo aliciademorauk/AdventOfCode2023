@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class Day1Challenge2 {
     public static void main(String[] args) throws FileNotFoundException {
-        try (Scanner scanner = new Scanner(new File("../puzzleInputs/PuzzleInputDay1.txt"))) {
+        try (Scanner scanner = new Scanner(new File("./puzzleInputs/PuzzleInputDay1.txt"))) {
             int totalSumPartTwo = 0;
             String line;
             String numbersOnly;

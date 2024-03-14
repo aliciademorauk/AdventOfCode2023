@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class Day1Challenge2ToDebug {
     public static void main(String[] args) throws FileNotFoundException {
-        try (Scanner scanner = new Scanner(new File("../puzzleInputs/PuzzleInputDay1.txt"))) {
+        try (Scanner scanner = new Scanner(new File("./puzzleInputs/PuzzleInputDay1.txt"))) {
             String line;
             String newLine;
             int firstIndex;
