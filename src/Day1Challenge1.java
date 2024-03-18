@@ -9,7 +9,7 @@ public class Day1Challenge1 {
 
         //Part 1
 
-        try (Scanner scanner = new Scanner(new File("./puzzleInputs/PuzzleInputDay1.txt"))) {
+        try (Scanner scanner = new Scanner(new File("src/puzzleInputs/PuzzleInputDay1.txt"))) {
             int totalSumPartOne = 0;
             String line;
             String numbersOnly;

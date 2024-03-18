@@ -4,70 +4,64 @@ import java.util.*;
 
 public class Day3Challenge2 {
     public static void main(String[] args) throws FileNotFoundException {
-        try (Scanner scanner = new Scanner(new File("./puzzleInputs/PuzzleInputDay3.txt"))) {
-            String currentLine;
-            String previousLine = "";
-            String nextLine = "";
-            String[] linesArray = new String[3];
-            String[] numbersArray;
+        try (Scanner scanner = new Scanner(new File("src/puzzleInputs/PuzzleInputDay3.txt"))) {
+            String[] linesArray = new String[] {"", "", ""}; // Array with previous [0], current [1] and next [2] line
+            String[][] numbersArray = new String[3][]; // Two-dimensional array to store previous [0], current [1] and next [2] numbers' arrays
             ArrayList<Integer> asteriskIndexes;
             int[] rangeToCheck;
             int[] numbersToMultiply = new int[2];
             int gearRatioTotal = 0;
 
             while (scanner.hasNextLine()) {
-                if (!nextLine.isBlank()) {
-                    currentLine = nextLine;
-                } else {currentLine = scanner.nextLine();}
-
-                if (scanner.hasNextLine()) {
-                    nextLine = scanner.nextLine();
+                if (!linesArray[2].isBlank()) {
+                    linesArray[1] = linesArray[2];
+                } else {
+                    linesArray[1] = scanner.nextLine();
                 }
 
-                linesArray[0] = previousLine;
-                linesArray[1] = currentLine;
-                linesArray[2] = nextLine;
+                if (scanner.hasNextLine()) {
+                    linesArray[2] = scanner.nextLine();
+                }
 
-                numbersArray = Arrays.stream(currentLine.split("\\D+"))
-                        .filter(s -> !s.isBlank())
-                        .toArray(String[]::new);
+                for (int i = 0; i < linesArray.length; i++) {
+                    numbersArray[i] = extractNumbers(linesArray[i]);
+                }
 
-
-                asteriskIndexes = extractAsteriskIndexes(currentLine);
+                asteriskIndexes = extractAsteriskIndexes(linesArray[1]);
 
                 for (int asteriskIndex : asteriskIndexes) {
-                    //what range to check for for this specific asterisk
-                    rangeToCheck = getIndexRange(currentLine, asteriskIndex);
+                    //what range to check for around this specific asterisk's index
+                    rangeToCheck = getIndexRange(linesArray[1], asteriskIndex); // int[] e.g. [3,5]
+                    int j = 0;
+                    int i = rangeToCheck[0];
                     for (String line : linesArray) {
-                        if (!line.isBlank()) {
-                            int j = 0;
-                            numbersToMultiply[0] = 0;
-                            numbersToMultiply[1] = 0;
-                            int i = rangeToCheck[0];
-                            int number = 0;
-                            while (i <= rangeToCheck[1]) {
-                                if (Character.isDigit(line.charAt(i))) {
-                                    number = (getNumberInRange(numbersArray, line, i));
-                                    numbersToMultiply[j] = number;
-                                    j++;
-                                }
-                                i += String.valueOf(number).length();
-                            }
-                            if (numbersToMultiply[0] != 0 && numbersToMultiply[1] != 0) {
-                                gearRatioTotal += numbersToMultiply[0] * numbersToMultiply[0];
+                        while (i <= rangeToCheck[1]) {
+                            if (Character.isDigit(line.charAt(i))) {
+                                numbersToMultiply[j] = getNumberInRange(numbersArray[j], line, i);
+                                j++;
+                                i++;
+                                break;
                             }
                         }
                     }
+                    if (numbersToMultiply[0] != 0 && numbersToMultiply[1] != 0) {
+                        gearRatioTotal += numbersToMultiply[0] * numbersToMultiply[0];
+                    }
                 }
-                previousLine = currentLine;
+                linesArray[0] = linesArray[1];
             }
             System.out.println("Total gear ratios: " + gearRatioTotal);
         }
     }
 
+    public static String[] extractNumbers(String line) {
+        return Arrays.stream(line.split("\\D+"))
+                .filter(s -> !s.isBlank())
+                .toArray(String[]::new);
+    }
+
     public static ArrayList<Integer> extractAsteriskIndexes(String line) {
         ArrayList<Integer> asteriskIndexes = new ArrayList<>();
-
         for (int i = 0; i < line.length(); i++) {
             if (line.charAt(i) == '*') {
                 asteriskIndexes.add(i);
@@ -77,7 +71,7 @@ public class Day3Challenge2 {
     }
 
     public static int[] getIndexRange(String line, int iOfSymbol) {
-        int[] rangeArray = new int[] {iOfSymbol - 1, iOfSymbol + 1};
+        int[] rangeArray = new int[]{iOfSymbol - 1, iOfSymbol + 1};
         if (iOfSymbol == 0) {
             rangeArray[0] = iOfSymbol;
         } else if (iOfSymbol == line.length() - 1) {
@@ -97,7 +91,6 @@ public class Day3Challenge2 {
                     indexLastDigit += 1;
                 }
             }
-
             if (index >= index1stDigit || index <= indexLastDigit) {
                 return Integer.parseInt(number);
             }

@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class Day3Challenge1 {
 
     public static void main(String[] args) throws FileNotFoundException {
-        try (Scanner scanner = new Scanner(new File("./puzzleInputs/PuzzleInputDay3.txt"))) {
+        try (Scanner scanner = new Scanner(new File("src/puzzleInputs/PuzzleInputDay3.txt"))) {
             String currentLine;
             String previousLine = "";
             String nextLine = "";
