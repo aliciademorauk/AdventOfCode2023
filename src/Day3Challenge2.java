@@ -10,9 +10,7 @@ public class Day3Challenge2 {
             ArrayList<Integer> asteriskIndexes;
             int[] rangeToCheck;
             int[] numbersToMultiply = new int[]{0,0};
-            //ArrayList<Integer> numbersToMultiply;
             int gearRatioTotal = 0;
-            int index = 0;
 
             while (scanner.hasNextLine()) {
                 if (!linesArray[2].isBlank()) {
@@ -78,7 +76,6 @@ public class Day3Challenge2 {
                     Arrays.fill(numbersToMultiply, 0);
                 }
                 linesArray[0] = linesArray[1];
-                index++;
             }
             System.out.println("Total gear ratios: " + gearRatioTotal);
         }
