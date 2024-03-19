@@ -1,3 +1,5 @@
+package solutions;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Arrays;
@@ -25,7 +27,7 @@ public class Day4Challenge1 {
                         totalMatches++;
                     }
                 }
-                total += Math.pow(pointsMultiplier, totalMatches - 1);
+                total += (int) Math.pow(pointsMultiplier, totalMatches - 1);
                 totalMatches = 0;
             }
             System.out.println(total);

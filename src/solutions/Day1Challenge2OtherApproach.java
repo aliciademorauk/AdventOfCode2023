@@ -1,10 +1,12 @@
+package solutions;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Map;
 import java.util.Scanner;
 
 
-public class Day1Challenge2ToDebug {
+public class Day1Challenge2OtherApproach {
     public static void main(String[] args) throws FileNotFoundException {
         try (Scanner scanner = new Scanner(new File("src/puzzleInputs/PuzzleInputDay1.txt"))) {
             String line;
