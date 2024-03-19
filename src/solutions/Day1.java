@@ -11,14 +11,16 @@ public class Day1 extends Day {
 
     @Override
     public int solvePart1(){
+        int output = 0;
         for (String line : input) {
-            totalPart1 += extractFirstLastDigit(line);
+            output += extractFirstLastDigit(line);
         }
-        return totalPart1;
+        return output;
     }
 
     @Override
     public int solvePart2(){
+        int output = 0;
         Map<String, String> numberMap = Map.of(
                 "one", "o1e",
                 "two", "t2o",
@@ -34,9 +36,9 @@ public class Day1 extends Day {
             for (String key : numberMap.keySet()) {
                 line = line.replaceAll(key, numberMap.get(key));
             }
-            totalPart2 += extractFirstLastDigit(line);
+            output += extractFirstLastDigit(line);
         }
-        return totalPart2;
+        return output;
     }
 
     //Other approach to Part2 - would be good to clean up in the future

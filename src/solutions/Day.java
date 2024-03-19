@@ -9,8 +9,6 @@ import java.util.LinkedList;
 public abstract class Day {
     protected int day;
     protected Collection<String> input;
-    protected int totalPart1 = 0;
-    protected int totalPart2 = 0;
 
     public Day(int day) throws IOException {
         this.day = day;
