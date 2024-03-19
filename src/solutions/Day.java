@@ -8,17 +8,14 @@ import java.util.LinkedList;
 
 public abstract class Day {
     protected int day;
+    protected Collection<String> input;
+    protected int totalPart1 = 0;
+    protected int totalPart2 = 0;
 
-    public Day(int day) {
+    public Day(int day) throws IOException {
         this.day = day;
-        try {
-            solution();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        this.input = readInput();
     }
-
-    public abstract void solution() throws IOException;
 
     Collection<String> readInput() throws IOException {
         Collection<String> list = new LinkedList<>();
@@ -31,4 +28,6 @@ public abstract class Day {
         return list;
     }
 
+    public abstract int solvePart1();
+    public abstract int solvePart2();
 }
