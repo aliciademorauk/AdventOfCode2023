@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 
-public class Day1Challenge2OtherApproach {
+public class Day1Part2OtherApproach {
     public static void main(String[] args) throws FileNotFoundException {
         try (Scanner scanner = new Scanner(new File("src/puzzleInputs/PuzzleInputDay1.txt"))) {
             String line;
