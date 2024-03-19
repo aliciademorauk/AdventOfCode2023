@@ -9,8 +9,8 @@ public class Day3Challenge2 {
             String[][] numbersArray = new String[3][]; // Two-dimensional array to store previous [0], current [1] and next [2] numbers' arrays
             ArrayList<Integer> asteriskIndexes;
             int[] rangeToCheck;
-            //int[] numbersToMultiply = new int[]{0,0};
-           ArrayList<Integer> numbersToMultiply;
+            int[] numbersToMultiply = new int[]{0,0};
+            //ArrayList<Integer> numbersToMultiply;
             int gearRatioTotal = 0;
             int index = 0;
 
@@ -73,7 +73,7 @@ public class Day3Challenge2 {
                     }
 
                     if (numbersToMultiply[0] != 0 && numbersToMultiply[1] != 0) {
-                        gearRatioTotal += numbersToMultiply[0] * numbersToMultiply[0];
+                        gearRatioTotal += numbersToMultiply[0] * numbersToMultiply[1];
                     }
                     Arrays.fill(numbersToMultiply, 0);
                 }
