@@ -40,22 +40,17 @@ public class Day3Challenge2 {
                         if (Character.isDigit(linesArray[0].charAt(i))) {
                             int number = getNumberInRange(numbersArray[0], linesArray[0], i);
                             if (!contains(numbersToMultiply, number)) {
-                                numbersToMultiply[y] = number;
-                                y++;
+                                numbersToMultiply[y++] = number;
                             }
                         }
-                        i++;
-                    }
 
-                    i = rangeToCheck[0];
-                    while (i <= rangeToCheck[1]) {
                         if (Character.isDigit(linesArray[2].charAt(i))) {
                             int number = getNumberInRange(numbersArray[2], linesArray[2], i);
                             if (!contains(numbersToMultiply, number)) {
-                                numbersToMultiply[y] = number;
-                                y++;
+                                numbersToMultiply[y++] = number;
                             }
                         }
+
                         i++;
                     }
 
