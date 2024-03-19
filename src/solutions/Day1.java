@@ -41,7 +41,7 @@ public class Day1 extends Day {
         return output;
     }
 
-    //Other approach to Part2 - would be good to clean up in the future
+    //Other approach to Part2 need to add here - would be good to clean up in the future
     //public int solvePart2OtherApproach(){}
 
     public int extractFirstLastDigit(String line) {
