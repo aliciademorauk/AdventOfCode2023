@@ -9,8 +9,10 @@ public class Day3Challenge2 {
             String[][] numbersArray = new String[3][]; // Two-dimensional array to store previous [0], current [1] and next [2] numbers' arrays
             ArrayList<Integer> asteriskIndexes;
             int[] rangeToCheck;
-            int[] numbersToMultiply = new int[2];
+            //int[] numbersToMultiply = new int[]{0,0};
+           ArrayList<Integer> numbersToMultiply;
             int gearRatioTotal = 0;
+            int index = 0;
 
             while (scanner.hasNextLine()) {
                 if (!linesArray[2].isBlank()) {
@@ -30,25 +32,53 @@ public class Day3Challenge2 {
                 asteriskIndexes = extractAsteriskIndexes(linesArray[1]);
 
                 for (int asteriskIndex : asteriskIndexes) {
-                    //what range to check for around this specific asterisk's index
+                    // What range to check for around this specific asterisk's index
                     rangeToCheck = getIndexRange(linesArray[1], asteriskIndex); // int[] e.g. [3,5]
-                    int j = 0;
+
+                    // Check previous and next line for digits in the relevant range around the asterisk in current line
+                    int y = 0;
                     int i = rangeToCheck[0];
-                    for (String line : linesArray) {
-                        while (i <= rangeToCheck[1]) {
-                            if (Character.isDigit(line.charAt(i))) {
-                                numbersToMultiply[j] = getNumberInRange(numbersArray[j], line, i);
-                                j++;
-                                i++;
-                                break;
+                    while (i <= rangeToCheck[1]) {
+                        if (Character.isDigit(linesArray[0].charAt(i))) {
+                            int number = getNumberInRange(numbersArray[0], linesArray[0], i);
+                            if (!contains(numbersToMultiply, number)) {
+                                numbersToMultiply[y] = number;
+                                y++;
                             }
                         }
+                        i++;
                     }
+
+                    i = rangeToCheck[0];
+                    while (i <= rangeToCheck[1]) {
+                        if (Character.isDigit(linesArray[2].charAt(i))) {
+                            int number = getNumberInRange(numbersArray[2], linesArray[2], i);
+                            if (!contains(numbersToMultiply, number)) {
+                                numbersToMultiply[y] = number;
+                                y++;
+                            }
+                        }
+                        i++;
+                    }
+
+                    // Check current line
+                    if (numbersToMultiply[1] == 0) {
+                        if (Character.isDigit(linesArray[1].charAt(rangeToCheck[0]))) {
+                            numbersToMultiply[y] = getNumberInRange(numbersArray[1], linesArray[1], rangeToCheck[0]);
+                            y++;
+                        }
+                        if (Character.isDigit(linesArray[1].charAt(rangeToCheck[1]))) {
+                            numbersToMultiply[y] = getNumberInRange(numbersArray[1], linesArray[1], rangeToCheck[1]);
+                        }
+                    }
+
                     if (numbersToMultiply[0] != 0 && numbersToMultiply[1] != 0) {
                         gearRatioTotal += numbersToMultiply[0] * numbersToMultiply[0];
                     }
+                    Arrays.fill(numbersToMultiply, 0);
                 }
                 linesArray[0] = linesArray[1];
+                index++;
             }
             System.out.println("Total gear ratios: " + gearRatioTotal);
         }
@@ -91,11 +121,20 @@ public class Day3Challenge2 {
                     indexLastDigit += 1;
                 }
             }
-            if (index >= index1stDigit || index <= indexLastDigit) {
+            if (index >= index1stDigit && index <= indexLastDigit) {
                 return Integer.parseInt(number);
             }
             startFromPosition = indexLastDigit;
         }
         return 1;
+    }
+
+    public static boolean contains(int[] array, int otherNumber) {
+        for (int number : array) {
+            if (number == otherNumber) {
+                return true;
+            }
+        }
+        return false;
     }
 }
