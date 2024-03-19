@@ -55,19 +55,17 @@ public class Day3Challenge2 {
                     }
 
                     // Check current line
-                    if (numbersToMultiply[1] == 0) {
-                        if (Character.isDigit(linesArray[1].charAt(rangeToCheck[0]))) {
-                            numbersToMultiply[y] = getNumberInRange(numbersArray[1], linesArray[1], rangeToCheck[0]);
+                    for (int number : rangeToCheck) {
+                        if (Character.isDigit(linesArray[1].charAt(number))) {
+                            numbersToMultiply[y] = getNumberInRange(numbersArray[1], linesArray[1], number);
                             y++;
-                        }
-                        if (Character.isDigit(linesArray[1].charAt(rangeToCheck[1]))) {
-                            numbersToMultiply[y] = getNumberInRange(numbersArray[1], linesArray[1], rangeToCheck[1]);
                         }
                     }
 
-                    if (numbersToMultiply[0] != 0 && numbersToMultiply[1] != 0) {
+                    if (Arrays.stream(numbersToMultiply).allMatch(num -> num != 0)) {
                         gearRatioTotal += numbersToMultiply[0] * numbersToMultiply[1];
                     }
+
                     Arrays.fill(numbersToMultiply, 0);
                 }
                 linesArray[0] = linesArray[1];
