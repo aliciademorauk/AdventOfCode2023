@@ -46,9 +46,11 @@ public class Day4 extends Day {
         int output = 0;
         int i = 1;
 
-        HashMap<Integer, Integer> lineMatches = new HashMap<>();
+        // Create HashMap with keys 1-219, with the value of 1
+        // (i.e. we start with the amount of each scratch card number being one)
+        HashMap<Integer, Integer> cardMatches = new HashMap<>();
         for (int j = 1; j <= input.size(); j++) {
-            lineMatches.put(j, 1);
+            cardMatches.put(j, 1);
         }
 
         for (String line : input) {
@@ -63,23 +65,17 @@ public class Day4 extends Day {
             }
 
             for (int x = i + 1; x <= i + totalMatches; x++) {
-                int updatedValue = lineMatches.get(x) + 1;
-                lineMatches.put(x, updatedValue);
-                //lineMatches.replace(x, lineMatches.get(x), lineMatches.get(x) + 1);
+                int updatedValue = cardMatches.get(x) + cardMatches.get(i);
+                cardMatches.put(x, updatedValue);
             }
 
             totalMatches = 0;
             i++;
         }
 
-        for (Map.Entry<Integer, Integer> entry : lineMatches.entrySet()) {
-            output += entry.getValue();
+        for (int value : cardMatches.values()) {
+            output += value;
         }
-
-//        for (Map.Entry<Integer, Integer> entry : lineMatches.entrySet()) {
-//            System.out.println(entry.getKey() + ": " + entry.getValue());
-//        }
-
         return output;
     }
 
@@ -90,3 +86,19 @@ public class Day4 extends Day {
                 .collect(Collectors.toList());
     }
 }
+
+
+
+
+
+
+
+
+
+
+// The lineMatches HashMap stores the card number and the number of cards of that number (e.g. (Card) 14: 5).
+// Therefore, for the number of matches that we find in a given card (stored in totalMatches), we are going to add
+// to the next 'totalMatches' cards (e.g. 4), the number of scratchcards that we had of the given card
+// e.g. if we have 5 Card 14's and Card 14 has 4 matches, then to the next 4 cards we want to add 5 to the
+// current amount of that card number that we have, since each of the Card 14s will generate another scratchcard of each
+// of the next 4, so 5 Card 14s generate: 5 Card 15s, 5 Card 16s, 5 Card 17s, 5 Card 18s.
