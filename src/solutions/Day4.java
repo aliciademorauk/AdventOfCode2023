@@ -15,61 +15,34 @@ public class Day4 extends Day {
 
     @Override
     public int solvePart1() {
-        String[] lineParts = new String[2];
-        List<Integer> winningNumbers;
-        List<Integer> myNumbers;
-        int pointsMultiplier = 2;
-        int totalMatches = 0;
+        int totalMatches;
         int output = 0;
+        int pointsMultiplier = 2;
         for (String line : input) {
-            lineParts = (line.split(":"))[1].split("\\|");
-            winningNumbers = extractNumbers(lineParts[0]);
-            myNumbers = extractNumbers(lineParts[1]);
-
-            for (int winner : winningNumbers) {
-                if (myNumbers.contains(winner)) {
-                    totalMatches++;
-                }
-            }
+            totalMatches = countMatches(line);
             output += (int) Math.pow(pointsMultiplier, totalMatches - 1);
-            totalMatches = 0;
         }
         return output;
     }
 
     @Override
     public int solvePart2() {
-        String[] lineParts = new String[2];
-        List<Integer> winningNumbers;
-        List<Integer> myNumbers;
-        int totalMatches = 0;
+        int totalMatches;
         int output = 0;
         int i = 1;
 
-        // Create HashMap with keys 1-219, with the value of 1
-        // (i.e. we start with the amount of each scratch card number being one)
+        // We start with the amount of each scratch card number being one
         HashMap<Integer, Integer> cardMatches = new HashMap<>();
         for (int j = 1; j <= input.size(); j++) {
             cardMatches.put(j, 1);
         }
 
         for (String line : input) {
-            lineParts = (line.split(":"))[1].split("\\|");
-            winningNumbers = extractNumbers(lineParts[0]);
-            myNumbers = extractNumbers(lineParts[1]);
-
-            for (int winner : winningNumbers) {
-                if (myNumbers.contains(winner)) {
-                    totalMatches++;
-                }
-            }
-
+            totalMatches = countMatches(line);
             for (int x = i + 1; x <= i + totalMatches; x++) {
                 int updatedValue = cardMatches.get(x) + cardMatches.get(i);
                 cardMatches.put(x, updatedValue);
             }
-
-            totalMatches = 0;
             i++;
         }
 
@@ -77,6 +50,19 @@ public class Day4 extends Day {
             output += value;
         }
         return output;
+    }
+
+    private int countMatches(String card) {
+        int totalMatches = 0;
+        List<Integer> winningNumbers = extractNumbers((card.split(":"))[1].split("\\|")[0]);
+        List<Integer> myNumbers = extractNumbers((card.split(":"))[1].split("\\|")[1]);
+
+        for (int winner : winningNumbers) {
+            if (myNumbers.contains(winner)) {
+                totalMatches++;
+            }
+        }
+        return totalMatches;
     }
 
     private List<Integer> extractNumbers(String line) {
