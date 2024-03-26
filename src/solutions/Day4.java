@@ -15,33 +15,28 @@ public class Day4 extends Day {
 
     @Override
     public int solvePart1() {
-        int totalMatches;
         int output = 0;
         int pointsMultiplier = 2;
-        for (String line : input) {
-            totalMatches = countMatches(line);
-            output += (int) Math.pow(pointsMultiplier, totalMatches - 1);
+        for (String cardLine : input) {
+            output += (int) Math.pow(pointsMultiplier, countMatches(cardLine) - 1);
         }
         return output;
     }
 
     @Override
     public int solvePart2() {
-        int totalMatches;
-        int output = 0;
-        int i = 1;
-
-        // We start with the amount of each scratch card number being one
         HashMap<Integer, Integer> cardMatches = new HashMap<>();
         for (int j = 1; j <= input.size(); j++) {
             cardMatches.put(j, 1);
         }
+        int output = 0;
+        int totalMatches;
+        int i = 1;
 
-        for (String line : input) {
-            totalMatches = countMatches(line);
+        for (String cardLine : input) {
+            totalMatches = countMatches(cardLine);
             for (int x = i + 1; x <= i + totalMatches; x++) {
-                int updatedValue = cardMatches.get(x) + cardMatches.get(i);
-                cardMatches.put(x, updatedValue);
+                cardMatches.put(x, cardMatches.get(x) + cardMatches.get(i));
             }
             i++;
         }
